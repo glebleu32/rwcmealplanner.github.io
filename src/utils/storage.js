@@ -28,3 +28,16 @@ export function loadState() {
 export function clearState() {
   localStorage.removeItem(KEY);
 }
+
+const FAVORITES_KEY = 'rwc-meal-planner-favorites-v1';
+
+export function saveFavorites(ids) {
+  localStorage.setItem(FAVORITES_KEY, JSON.stringify(ids));
+}
+
+export function loadFavorites() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(FAVORITES_KEY));
+    return Array.isArray(raw) ? raw : [];
+  } catch { return []; }
+}

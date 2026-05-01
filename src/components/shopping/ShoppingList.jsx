@@ -5,7 +5,7 @@ import RecipeCard from '../planner/RecipeCard';
 import Button from '../common/Button';
 import { DAYS } from '../../data/constants';
 
-export default function ShoppingList({ weekPlan, servings }) {
+export default function ShoppingList({ weekPlan, servings, favoriteIds = [], onToggleFavorite }) {
   const [expandedDay, setExpandedDay] = useState(null);
   const planned = Object.values(weekPlan).filter(d => d.recipe);
 
@@ -26,8 +26,6 @@ export default function ShoppingList({ weekPlan, servings }) {
 
   return (
     <div className="shopping-list max-w-screen-xl mx-auto px-4 pb-10">
-
-      {/* Grocery list header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
         <div>
           <h2 className="text-lg font-semibold text-gray-800">Grocery List</h2>
@@ -35,12 +33,7 @@ export default function ShoppingList({ weekPlan, servings }) {
             {totalItems} items across {sections.length} sections · {planned.length} meals planned
           </p>
         </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => window.print()}
-          className="no-print self-start sm:self-auto"
-        >
+        <Button variant="ghost" size="sm" onClick={() => window.print()} className="no-print self-start sm:self-auto">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
           </svg>
@@ -48,7 +41,6 @@ export default function ShoppingList({ weekPlan, servings }) {
         </Button>
       </div>
 
-      {/* Grocery sections */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {sections.map(([sectionName, items]) => (
           <StoreSection key={sectionName} sectionName={sectionName} items={items} />
@@ -72,13 +64,14 @@ export default function ShoppingList({ weekPlan, servings }) {
                   expanded={expandedDay === day}
                   onToggleExpand={() => setExpandedDay(d => d === day ? null : day)}
                   onRegenerate={() => {}}
+                  isFavorited={favoriteIds.includes(weekPlan[day].recipe.id)}
+                  onToggleFavorite={onToggleFavorite}
                 />
               </div>
             </div>
           ))}
         </div>
       </div>
-
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { DAYS } from '../../data/constants';
 import DayCard from './DayCard';
 
-export default function WeekPlanner({ weekPlan, servings, onCuisineChange, onRegenerate }) {
+export default function WeekPlanner({ weekPlan, servings, onCuisineChange, onRegenerate, favoriteIds, onToggleFavorite }) {
   return (
     <div className="week-planner max-w-screen-xl mx-auto px-4 py-6">
       <div className="flex items-center justify-between mb-4">
@@ -21,6 +21,8 @@ export default function WeekPlanner({ weekPlan, servings, onCuisineChange, onReg
             servings={servings}
             onCuisineChange={cuisine => onCuisineChange(day, cuisine)}
             onRegenerate={() => onRegenerate(day)}
+            isFavorited={weekPlan[day].recipe ? favoriteIds.includes(weekPlan[day].recipe.id) : false}
+            onToggleFavorite={onToggleFavorite}
           />
         ))}
       </div>
